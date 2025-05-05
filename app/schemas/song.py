@@ -1,21 +1,23 @@
-from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
+from pydantic import BaseModel, Field
 
 class SongBase(BaseModel):
-    spotify_id: str
     title: str
     artist: str
-    album: Optional[str] = None
-    release_date: Optional[str] = None
-    lyrics: Optional[str] = None
-    difficulty_level: Optional[int] = None
-    genre: Optional[str] = None
+    duration: int
+    genre: str
+    image_url: str
+    level: float = Field(ge=1.0, le=5.0)
 
 class SongCreate(SongBase):
     pass
 
-class SongResponse(SongBase):
+class SongDisplay(SongBase):
     id: int
 
     class Config:
-        from_attributes = True 
+        from_attributes = True
+
+class SongListResponse(BaseModel):
+    songs: List[SongDisplay]
+    total: int 
